@@ -1,3 +1,3 @@
 **Go Ticket**
 
-Web application to buy tickets for movies written in Go and React.
+Web application to buy movie tickets online. Written in Go and React.
