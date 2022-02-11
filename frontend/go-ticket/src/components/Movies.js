@@ -23,7 +23,7 @@ export default class Movies extends Component {
                     <nav>
                         {this.state.movies.map((m) =>
                             <li key={m.id}>
-                                <Link to={`/movies/${m.id}`}> {m.title} </Link>
+                                <Link to={`/movies/${m.title}`}> {m.title} </Link>
                             </li>
                         )}
                     </nav>

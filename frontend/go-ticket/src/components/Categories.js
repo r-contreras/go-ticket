@@ -1,10 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react'
+import { Link } from 'react-router-dom'
 
-export default class Categories extends Component {
+function Categories() {
+    return (
+        <div>
+            <h2>Categories</h2>
+            <ul>
+                <li>
+                    <Link to='comedy'> Comedy </Link>
+                </li>
+                <li>
+                    <Link to='drama'> Drama </Link>
+                </li>
+            </ul>
+        </div>
 
-    render() {
-        return (
-            <h1>Categories</h1>
-        )
-    }
+    )
 }
+
+export default Categories
