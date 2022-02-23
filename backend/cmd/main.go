@@ -2,7 +2,6 @@ package main
 
 import (
 	api "backend/cmd/api"
-	implementations "backend/cmd/implementations"
 	"flag"
 	"fmt"
 	"log"
@@ -19,25 +18,26 @@ func setupConfig() api.Config {
 	return cfg
 }
 
-func setupApp(cfg api.Config) *implementations.Application {
+func setupApp(cfg api.Config) *api.Application {
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
-	app:= &implementations.Application{
-		Config:  cfg,
+	app := &api.Application{
+		Config: cfg,
 		Logger: logger,
 	}
 	return app
 }
-func main(){
-	
+
+func main() {
+
 	cfg := setupConfig()
 	app := setupApp(cfg)
 
 	srv := &http.Server{
-		Addr: fmt.Sprintf(":%d", cfg.Port),
-		Handler: app.Routes(),
-		IdleTimeout: time.Minute,
-		ReadTimeout: 10*time.Second,
-		WriteTimeout: 30*time.Second,
+		Addr:         fmt.Sprintf(":%d", cfg.Port),
+		Handler:      app.Routes(),
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 30 * time.Second,
 	}
 
 	app.Logger.Println("Starting server on port", cfg.Port)
