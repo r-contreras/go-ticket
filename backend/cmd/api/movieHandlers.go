@@ -28,10 +28,17 @@ func (app *Application) GetMovie(w http.ResponseWriter, r *http.Request) {
 	err = utils.WriteJsonResponse("movie", movie, http.StatusOK, w)
 	if err != nil {
 		app.Logger.Println(errors.New("GetMovie Handler: Could not write JSON response"))
-		return
 	}
 }
 
 func (app *Application) GetAllMovies(w http.ResponseWriter, r *http.Request) {
+	movies, err := app.Model.GetAllMovies()
+	if err != nil {
+		app.Logger.Println(err)
+	}
 
+	err = utils.WriteJsonResponse("movies", movies, http.StatusOK, w)
+	if err != nil {
+		app.Logger.Println(errors.New("GetAllMovies Handler: Could not write JSON response"))
+	}
 }
