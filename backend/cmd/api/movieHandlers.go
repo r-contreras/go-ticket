@@ -1,12 +1,10 @@
 package api
 
 import (
-	"backend/cmd/models"
 	utils "backend/cmd/utils"
 	"errors"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -21,17 +19,10 @@ func (app *Application) GetMovie(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	movie := models.Movie{
-		Id:          id,
-		Title:       "The Shawshank Redemption",
-		Description: "The description",
-		Year:        "1998",
-		ReleaseDate: time.Date(2021, 01, 01, 01, 0, 0, 0, time.Local),
-		Runtime:     100,
-		Rating:      4.5,
-		MPAARating:  "PG-13",
-		CreatedAt:   time.Now(),
-		UpdatedAt:   time.Now(),
+	movie, err := app.Model.GetMovie(id)
+
+	if err != nil {
+		return
 	}
 
 	err = utils.WriteJsonResponse("movie", movie, http.StatusOK, w)

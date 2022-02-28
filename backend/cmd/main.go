@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"time"
 )
 
@@ -14,23 +13,20 @@ func setupConfig() api.Config {
 	var cfg api.Config
 	flag.IntVar(&cfg.Port, "port", 4000, "Server port to listen on")
 	flag.StringVar(&cfg.Env, "env", "development", "Application environment (development|production)")
+	flag.StringVar(&cfg.Dsn, "dsn", "postgres://rcontreras@localhost/go_ticket?sslmode=disable", "Postgres connection string")
 	flag.Parse()
 	return cfg
-}
-
-func setupApp(cfg api.Config) *api.Application {
-	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
-	app := &api.Application{
-		Config: cfg,
-		Logger: logger,
-	}
-	return app
 }
 
 func main() {
 
 	cfg := setupConfig()
-	app := setupApp(cfg)
+	app := api.SetupApp(cfg)
+	err := app.OpenDB()
+	if err != nil {
+		app.Logger.Fatal(err)
+	}
+	defer app.CloseDB()
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%d", cfg.Port),
@@ -42,7 +38,7 @@ func main() {
 
 	app.Logger.Println("Starting server on port", cfg.Port)
 
-	err := srv.ListenAndServe()
+	err = srv.ListenAndServe()
 
 	if err != nil {
 		log.Println(err)
