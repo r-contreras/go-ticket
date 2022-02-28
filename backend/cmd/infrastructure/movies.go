@@ -33,35 +33,36 @@ func (m *DbModel) GetMovie(id int) (*models.Movie, error) {
 		return nil, err
 	}
 
-	//Scan movieGenres related to the movie
-	query = `select 
-				mg.id, mg.movie_id, mg.genre_id, g.genre_name
+	//Scan genres related to the movie
+	query = `select
+				g.id, g.genre_name
 			from
-				movies_genres mg
-				left join genres g on (g.id = mg.genre_id)
+				genres g left join movies_genres mg on (g.id = mg.genre_id)
 			where
 				mg.movie_id = $1`
 
-	rows, _ := m.DB.QueryContext(ctx, query, id)
+	rows, err := m.DB.QueryContext(ctx, query, id)
+
+	if err != nil {
+		return nil, err
+	}
+
 	defer rows.Close()
 
-	var genres []models.MovieGenre
+	var genres []models.Genre
 
 	for rows.Next() {
-		var mg models.MovieGenre
+		var g models.Genre
 		err := rows.Scan(
-			&mg.Id,
-			&mg.MovieId,
-			&mg.GenreId,
-			&mg.Genre.Name,
+			&g.Id,
+			&g.Name,
 		)
-
 		if err != nil {
 			return nil, err
 		}
-		genres = append(genres, mg)
+		genres = append(genres, g)
 	}
-	movie.MovieGenre = genres
+	movie.MovieGenres = genres
 	return &movie, nil
 }
 

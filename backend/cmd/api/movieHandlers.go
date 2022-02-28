@@ -22,7 +22,7 @@ func (app *Application) GetMovie(w http.ResponseWriter, r *http.Request) {
 	movie, err := app.Model.GetMovie(id)
 
 	if err != nil {
-		return
+		app.Logger.Println(err)
 	}
 
 	err = utils.WriteJsonResponse("movie", movie, http.StatusOK, w)
