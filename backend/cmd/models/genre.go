@@ -3,8 +3,8 @@ package models
 import "time"
 
 type Genre struct {
-	Id        int       `json:"id"`
+	Id        int       `json:"-"`
 	Name      string    `json:"name"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	CreatedAt time.Time `json:"-"`
+	UpdatedAt time.Time `json:"-"`
 }

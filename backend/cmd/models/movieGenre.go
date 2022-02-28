@@ -3,10 +3,10 @@ package models
 import "time"
 
 type MovieGenre struct {
-	Id        int       `json:"id"`
-	MovieId   int       `json:"movie_id"`
+	Id        int       `json:"-"`
+	MovieId   int       `json:"-"`
 	GenreId   int       `json:"genre_id"`
 	Genre     Genre     `json:"genre"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	CreatedAt time.Time `json:"-"`
+	UpdatedAt time.Time `json:"-"`
 }
