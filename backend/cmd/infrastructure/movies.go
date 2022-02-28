@@ -43,19 +43,21 @@ func (m *DbModel) GetMovie(id int) (*models.Movie, error) {
 	return &movie, nil
 }
 
-func (m *DbModel) GetAllMovies() (*[]models.Movie, error) {
+func (m *DbModel) GetAllMovies() ([]*models.Movie, error) {
 	ctx, close := context.WithTimeout(context.Background(), 3*time.Second)
 	defer close()
 
 	query := `select
 				id, title, description, year, release_date, runtime, rating, mpaa_rating
 			from
-				movies`
+				movies
+			order by
+				title`
 	rows, err := m.DB.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
 	}
-	var movies []models.Movie
+	var movies []*models.Movie
 	for rows.Next() {
 		var movie models.Movie
 		rows.Scan(
@@ -74,12 +76,12 @@ func (m *DbModel) GetAllMovies() (*[]models.Movie, error) {
 			return nil, err
 		}
 		movie.MovieGenres = genres
-		movies = append(movies, movie)
+		movies = append(movies, &movie)
 	}
-	return &movies, nil
+	return movies, nil
 }
 
-func (m *DbModel) getMovieGenres(ctx context.Context, id int) ([]models.Genre, error) {
+func (m *DbModel) getMovieGenres(ctx context.Context, id int) (map[int]string, error) {
 	//Scan genres related to the movie
 	query := `select
 				g.id, g.genre_name
@@ -93,10 +95,9 @@ func (m *DbModel) getMovieGenres(ctx context.Context, id int) ([]models.Genre, e
 	if err != nil {
 		return nil, err
 	}
-
 	defer rows.Close()
 
-	var genres []models.Genre
+	genres := make(map[int]string)
 
 	for rows.Next() {
 		var g models.Genre
@@ -107,7 +108,7 @@ func (m *DbModel) getMovieGenres(ctx context.Context, id int) ([]models.Genre, e
 		if err != nil {
 			return nil, err
 		}
-		genres = append(genres, g)
+		genres[g.Id] = g.Name
 	}
 	return genres, nil
 }
