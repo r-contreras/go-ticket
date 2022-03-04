@@ -1,10 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Header from '../components/core/Header'
 
 function Categories() {
     return (
         <div>
-            <h2>Categories</h2>
+            <Header text={"Categories"} />
             <ul>
                 <li>
                     <Link to='comedy'> Comedy </Link>

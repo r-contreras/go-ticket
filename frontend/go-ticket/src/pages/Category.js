@@ -1,12 +1,13 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import Header from '../components/core/Header'
 
 function Category() {
     let { category } = useParams()
     let title = capitalizeFirstLetter(category)
     return (
         <div>
-            <h2> {title} </h2>
+            <Header text={title} />
         </div>
     )
 }

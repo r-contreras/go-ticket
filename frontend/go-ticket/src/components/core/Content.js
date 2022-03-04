@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Admin from './Admin';
-import Categories from './Categories';
-import Category from './Category';
-import Home from './Home';
-import Movies from './Movies';
-import Movie from './Movie';
+import Admin from '../../pages/Admin';
+import Categories from '../../pages/Categories';
+import Category from '../../pages/Category';
+import Home from '../../pages/Home';
+import Movies from '../../pages/Movies';
+import Movie from '../../pages/Movie';
 export default class Content extends Component {
 
     render() {
         return (
-            <div className='container'>
+            <div className='container text-white'>
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='admin' element={<Admin />} />
