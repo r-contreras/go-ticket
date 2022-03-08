@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from "axios";
 import Header from '../components/core/Header.js';
-import { Link } from 'react-router-dom';
+import TextLink from '../components/core/TextLink.js';
 
 function Movies() {
     const [movies, setMovies] = useState([])
@@ -16,11 +16,13 @@ function Movies() {
     return (
         <div>
             <Header text={"Movies"} />
-            <ul>
+            <ul className='list-group list-group-flush'>
                 <nav>
                     {movies.map((m) =>
-                        <li key={m.id}>
-                            <Link to={`/movies/${m.title}`}> {m.title} </Link>
+                        <li key={m.id} className='list-group-item bg-black'>
+                            <TextLink to={`/movies/${m.id}`}>
+                                {m.title} ({m.year})
+                            </TextLink>
                         </li>
                     )}
                 </nav>
