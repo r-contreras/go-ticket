@@ -1,8 +1,6 @@
 package api
 
 import (
-	utils "backend/cmd/utils"
-	"errors"
 	"net/http"
 	"strconv"
 
@@ -15,19 +13,21 @@ func (app *Application) GetMovie(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(params.ByName("id"))
 
 	if err != nil {
-		app.Logger.Println(errors.New("GetMovie Handler: Invalid id parameter"))
+		app.Logger.Println("GetMovie Handler:", err)
+		app.WriteBadRequest(w)
 		return
 	}
 
 	movie, err := app.Model.GetMovie(id)
 
 	if err != nil {
-		app.Logger.Println(err)
+		app.Logger.Println("GetMovie Handler:", err)
 	}
 
-	err = utils.WriteJsonResponse("movie", movie, http.StatusOK, w)
+	err = app.WriteJsonResponse("movie", movie, http.StatusOK, w)
+
 	if err != nil {
-		app.Logger.Println(errors.New("GetMovie Handler: Could not write JSON response"))
+		app.Logger.Println("GetMovie Handler:", err)
 	}
 }
 
@@ -37,8 +37,8 @@ func (app *Application) GetAllMovies(w http.ResponseWriter, r *http.Request) {
 		app.Logger.Println(err)
 	}
 
-	err = utils.WriteJsonResponse("movies", movies, http.StatusOK, w)
+	err = app.WriteJsonResponse("movies", movies, http.StatusOK, w)
 	if err != nil {
-		app.Logger.Println(errors.New("GetAllMovies Handler: Could not write JSON response"))
+		app.Logger.Println("GetAllMovies Handler:", err)
 	}
 }

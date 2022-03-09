@@ -44,8 +44,8 @@ func (m *DbModel) GetMovie(id int) (*models.Movie, error) {
 }
 
 func (m *DbModel) GetAllMovies() ([]*models.Movie, error) {
-	ctx, close := context.WithTimeout(context.Background(), 3*time.Second)
-	defer close()
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
 
 	query := `select
 				id, title, description, year, release_date, runtime, rating, mpaa_rating
@@ -60,7 +60,7 @@ func (m *DbModel) GetAllMovies() ([]*models.Movie, error) {
 	var movies []*models.Movie
 	for rows.Next() {
 		var movie models.Movie
-		rows.Scan(
+		err := rows.Scan(
 			&movie.Id,
 			&movie.Title,
 			&movie.Description,
@@ -70,6 +70,9 @@ func (m *DbModel) GetAllMovies() ([]*models.Movie, error) {
 			&movie.Rating,
 			&movie.MPAARating,
 		)
+		if err != nil {
+			return nil, err
+		}
 		//Get genres if any
 		genres, err := m.getMovieGenres(ctx, movie.Id)
 		if err != nil {
