@@ -34,7 +34,7 @@ func (m *DbModel) GetMovie(id int) (*models.Movie, error) {
 	}
 
 	//Get genres if any
-	genres, err := m.getMovieGenres(ctx, id)
+	genres, err := m.getGenresFromMovie(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -73,18 +73,12 @@ func (m *DbModel) GetAllMovies() ([]*models.Movie, error) {
 		if err != nil {
 			return nil, err
 		}
-		//Get genres if any
-		genres, err := m.getMovieGenres(ctx, movie.Id)
-		if err != nil {
-			return nil, err
-		}
-		movie.MovieGenres = genres
 		movies = append(movies, &movie)
 	}
 	return movies, nil
 }
 
-func (m *DbModel) getMovieGenres(ctx context.Context, id int) (map[int]string, error) {
+func (m *DbModel) getGenresFromMovie(ctx context.Context, id int) (map[int]string, error) {
 	//Scan genres related to the movie
 	query := `select
 				g.id, g.genre_name

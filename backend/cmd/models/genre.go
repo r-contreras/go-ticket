@@ -7,4 +7,5 @@ type Genre struct {
 	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"-"`
 	UpdatedAt time.Time `json:"-"`
+	Movies    []*Movie  `json:"movies"`
 }
