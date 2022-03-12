@@ -20,7 +20,7 @@ function Movies() {
                 <nav>
                     {movies.map((m) =>
                         <li key={m.id} className='list-group-item bg-black'>
-                            <TextLink to={`/movies/${m.id}`}>
+                            <TextLink to={`${m.id}`}>
                                 {m.title} ({m.year})
                             </TextLink>
                         </li>

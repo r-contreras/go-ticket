@@ -13,7 +13,7 @@ export default class Navbar extends Component {
                     </a>
                     <div className='navbar-nav'>
                         <Link className='nav-link' to="/"> Home </Link>
-                        <Link className='nav-link' to="/categories"> Categories </Link>
+                        <Link className='nav-link' to="/genres"> Genres </Link>
                         <Link className='nav-link' to="/movies"> Movies </Link>
                         <Link className='nav-link disabled' to="/admin"> Manage Catalogue </Link>
                     </div>
